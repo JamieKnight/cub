@@ -19,4 +19,4 @@ To get going, simply checkout the files and upload them to some PHP 5.3 capable 
 
 #Work in progress
 * Basic routing (list pages and article pages).
-* Custom tags (<cub:custom name="">)
+* Custom tags (```<cub:custom name="">```)
