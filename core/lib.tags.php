@@ -37,6 +37,7 @@
 				//get file content and apply markdown.
 				$article = readFileContentIntoArray($sourcePath);
 				$article['body'] = Markdown($article['body']);
+				$page['article'] = $article;
 	
 				//load form:
 				$markup = parse(file_get_contents("./templates/form.default.php"));
@@ -62,5 +63,16 @@
 	function posted($atts, $thing){
 		global $page;
 		return date("d/m/Y", $page['article']['published']); 
+	}
+	
+	function featured_image(){
+		global $page;
+		if(isset($page['article']['headers']['feature image'])) return "images/".$page['article']['headers']['feature image'];
+		return false;
+	}
+	
+	function if_featured_image($atts, $thing)
+	{	global $page;
+		return parse(EvalElse($thing, (isset($page['article']['headers']['feature image']))));
 	}	
 ?>
