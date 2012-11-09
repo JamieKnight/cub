@@ -1,8 +1,23 @@
 <?
-
 // -------------------------------------------------------------
-	function page_title($atts){
-		return "Page Title";
+	function page_title($atts, $thing, $matchs, $rawTag){
+		extract(lAtts(array(
+			'seperator' => '',
+		),$atts));
+		
+		global $page;
+		
+		if ($page['secondpass']){
+			
+			if ($page['type'] == "article" && isset($page['article']['title'])){ 
+				return $seperator.$page['article']['title'];
+			
+			}
+		}else{
+			return $rawTag;
+		}
+		
+		return false;
 	}
 
 // -------------------------------------------------------------
@@ -20,16 +35,21 @@
 // -------------------------------------------------------------
 	function article($atts, $thing){
 		
+		extract(lAtts(array(
+			'form' => '',
+			'limit' => '',
+		),$atts));
+		
 		global $page;
 		if($page['type'] == "article"){
 			
-			$cachePath = "./core/cache/".$page['source_file'].".md";
+			$cachePath = "./core/cache/".$form."-".$page['source_file'].".md";
 			$sourcePath = "./content/".$page['source_file'].".md";
+			$formPath = "./templates/form.".$form.".php";
 			$cache = true;
 			//check cache
 			if($cache && file_exists($cachePath) && (microtime(true)-filemtime($cachePath) < 120))
 			{
-				print_r(microtime(true)-filemtime($cachePath));
 				return file_get_contents($cachePath);
 				
 			}else if(file_exists($sourcePath)){
@@ -40,7 +60,8 @@
 				$page['article'] = $article;
 	
 				//load form:
-				$markup = parse(file_get_contents("./templates/form.default.php"));
+				$form = (file_exists($formPath)) ? $form : "default";
+				$markup = parse(file_get_contents("./templates/form.".$form.".php"));
 				
 				//add to cache
 				file_put_contents($cachePath, $markup);
@@ -64,13 +85,15 @@
 		global $page;
 		return date("d/m/Y", $page['article']['published']); 
 	}
-	
+
+// -------------------------------------------------------------	
 	function featured_image(){
 		global $page;
 		if(isset($page['article']['headers']['feature image'])) return "images/".$page['article']['headers']['feature image'];
 		return false;
 	}
 	
+// -------------------------------------------------------------
 	function if_featured_image($atts, $thing)
 	{	global $page;
 		return parse(EvalElse($thing, (isset($page['article']['headers']['feature image']))));
