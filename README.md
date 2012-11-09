@@ -12,9 +12,9 @@ To get going, simply checkout the files and upload them to some PHP 5.3 capable 
 #Current Features
 
 * Tag parser and input file handing
-* Section handling via <cub:if_section>
-* Article list tag (<cub:article />)
-* Article form tags (<cub:title />, <cub:body />, <cub:posted />, <cub:featured_image>. <cub:if_featured_image>).
+* Section handling via ```<cub:if_section>```
+* Article list tag (```<cub:article />```)
+* Article form tags (```<cub:title />```, ```<cub:body />```, ```<cub:posted />```, ```<cub:featured_image>```. ```<cub:if_featured_image>```).
 
 
 #Work in progress
