@@ -3,7 +3,7 @@ Cub CMS
 
 Micro CMS using textpattern tags powered by a folder of markdown files.
 
-**WARNING: This project is in extremely early stages, lots of stuff is in flex and it should not be trusted with your data! **
+__WARNING: This project is in extremely early stages, lots of stuff is in flex and it should not be trusted with your data!__
 
 Setup:
 ------
