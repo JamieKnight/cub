@@ -23,9 +23,28 @@
 		global $page;
 		if($page['type'] == "article"){
 			
-			//load form:
-			$html = file_get_contents("./templates/form.default.php");
-			return parse($html);
+			$cachePath = "./core/cache/".$page['source_file'].".md";
+			$sourcePath = "./content/".$page['source_file'].".md";
+			$cache = true;
+			//check cache
+			if($cache && file_exists($cachePath) && (microtime(true)-filemtime($cachePath) < 120))
+			{
+				print_r(microtime(true)-filemtime($cachePath));
+				return file_get_contents($cachePath);
+				
+			}else if(file_exists($sourcePath)){
+				
+				//get file content and apply markdown.
+				$article = readFileContentIntoArray($sourcePath);
+				$article['body'] = Markdown($article['body']);
+	
+				//load form:
+				$markup = parse(file_get_contents("./templates/form.default.php"));
+				
+				//add to cache
+				file_put_contents($cachePath, $markup);
+				return $markup;
+			}			
 		}
 	}
 // -------------------------------------------------------------	
