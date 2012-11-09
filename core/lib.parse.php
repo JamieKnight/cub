@@ -46,8 +46,8 @@ $LastChangedRevision$
 		$out = '';
 
 		if (function_exists($tag))
-		{
-			$out = $tag($atts, $thing, $matches[0]);
+		{	
+			$out = $tag($atts, $thing, $matches[0], $cub_current_tag);
 		}
 
 		elseif (isset($pretext[$tag]))

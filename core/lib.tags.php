@@ -74,5 +74,19 @@
 	function if_featured_image($atts, $thing)
 	{	global $page;
 		return parse(EvalElse($thing, (isset($page['article']['headers']['feature image']))));
-	}	
+	}
+
+// -------------------------------------------------------------
+	function permalink($atts){
+		extract(lAtts(array(
+			'label' => '',
+			'class' => '',
+		),$atts));
+		
+		global $page;
+		//FIXME: I assume paths below.
+		$output ='<a rel="bookmark" href="/cub/index.php?page='.$page['source_file'].'" class="'.$class.'">'.$label.'</a>';
+		return $output;
+	}
+
 ?>

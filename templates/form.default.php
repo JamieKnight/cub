@@ -8,6 +8,7 @@
 
 	<p class="meta">
 		Published: <cub:posted /> 
+		<cub:permalink label="Permalink" class="permlink" />
 	</p>
 </div>	
 </article>
