@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Jamie & Lion<cub:page_title seperator=" - " /></title>
+	<title>(CUB) Jamie & Lion<cub:page_title seperator=" - " /></title>
 	<link href="/screen.css" media="screen" rel="stylesheet" type="text/css" />
 	<meta name="viewport" content="width=device-width initial-scale=1.0, 
     maximum-scale=1.0, minimum-scale=1.0" />
@@ -13,8 +13,8 @@
 	
 	<nav>
 		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/archive">Archive</a></li>
+			<li><a href="/cub/">Home</a></li>
+			<li><a href="/cub/archive">Archive</a></li>
 			<li><a href="http://pluslion.com">Work</a></li>
 		</ul>
 	</nav>
@@ -26,8 +26,7 @@
 		<p>The personal site of <strong>Jamie Knight</strong>, a slightly autistic (<abbr title="British Boradcasting Corpoeration">BBC</abbr>)  <strong>web developer</strong>, <strong>speaker</strong> and <strong>mountain biker</strong> who is never seen far from his plush sidekick <em>Lion</em>.</p>
 	</aside>
 	
-	<cub:article form="special"/>
-	
+	<cub:article limit="3" listform="default"/>
 
 </body>
 </html>
