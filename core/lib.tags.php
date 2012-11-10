@@ -72,7 +72,7 @@
 	function posted($atts, $thing){
 		global $page;
 		extract(lAtts(array(
-			'format' => '"d/m/Y"',
+			'format' => 'd/m/Y',
 			'class' => '',
 		),$atts));
 		
