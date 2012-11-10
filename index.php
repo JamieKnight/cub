@@ -13,18 +13,18 @@
 	
 	//enable caching?
 	$page['cache'] = (isset($_GET['cache'])) ? false : true;
+	//$page['cache'] = false;
 	
-	//find the file and parse the markdown
+	//list or article page?
 	$article['source'] = (isset($_GET['page'])) ? $_GET['page'] : false;
+	$page['section'] = (isset($_GET['s'])) ? $_GET['s'] : 'default';
 	
 	if($article['source'])
 	{
 		$page['type'] = "article";
-		$page['section'] = "default";
 		$page['source_file'] = $article['source'];
 	}else{
 		$page['type'] = "list";
-		$page['section'] = "default";
 	}
 
 	//load template and parse

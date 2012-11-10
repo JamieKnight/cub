@@ -26,9 +26,9 @@
 			'name' => '',
 		),$atts));
 	
-		$section = "house";
+		global $page;
 	
-		return parse(EvalElse($thing, ($section == $name)));	
+		return parse(EvalElse($thing, ($page['section'] == $name)));	
 	}
 
 // -------------------------------------------------------------
@@ -71,7 +71,12 @@
 // -------------------------------------------------------------	
 	function posted($atts, $thing){
 		global $page;
-		return date("d/m/Y", $page['article']['published']); 
+		extract(lAtts(array(
+			'format' => '"d/m/Y"',
+			'class' => '',
+		),$atts));
+		
+		return date($format, $page['article']['published']); 
 	}
 
 // -------------------------------------------------------------	
@@ -101,5 +106,23 @@
 		$output ='<a rel="bookmark" href="/cub/index.php?page='.$page['source_file'].'" class="'.$class.'">'.$label.'</a>';
 		return $output;
 	}
+
+// -------------------------------------------------------------
+	function if_different($atts, $thing)
+	{
+		static $last;
+
+		$key = md5($thing);
+
+		$cond = EvalElse($thing, 1);
+
+		$out = parse($cond);
+		if (empty($last[$key]) or $out != $last[$key]) {
+			return $last[$key] = $out;
+		}
+		else
+			return parse(EvalElse($thing, 0));
+	}
+
 
 ?>

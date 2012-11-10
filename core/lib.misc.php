@@ -285,6 +285,8 @@
 			'listform' => '',
 		),$atts));
 	
+
+	
 		global $page;
 		$page['source_file'] = $page['source_file'];
 		return parse_form($form);
@@ -328,7 +330,7 @@
 		//define paths
 		$cachePath 	= "./core/cache/".$form."-".$page['source_file'].".md";
 		$sourcePath = "./content/".$page['section']."/".$page['source_file'].".md";
-		
+		$sourcePath = (file_exists($sourcePath)) ? $sourcePath : "./content/default/".$page['source_file'].".md";
 		//test and set form
 		$form 		= (file_exists("./forms/".$form.".php")) ? $form : "default";
 		$formPath 	= "./forms/".$form.".php";
@@ -337,7 +339,7 @@
 		$sourceTime   = (file_exists($sourcePath)) ? filemtime($sourcePath)."<- source <br>" : false;
 		$cacheTime	  = (file_exists($cachePath)) ? filemtime($cachePath) : false;
 		$formTime	  = filemtime($formPath);
-		
+				
 		//Cache is valid only if source and form are older than cache.
 		if($page['cache'] && ($sourceTime && $cacheTime && $sourceTime < $cacheTime && $formTime < $cacheTime)){
 			return file_get_contents($cachePath);

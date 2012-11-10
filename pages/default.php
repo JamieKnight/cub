@@ -14,7 +14,7 @@
 	<nav>
 		<ul>
 			<li><a href="/cub/">Home</a></li>
-			<li><a href="/cub/archive">Archive</a></li>
+			<li><a href="/cub/index.php?s=archive">Archive</a></li>
 			<li><a href="http://pluslion.com">Work</a></li>
 		</ul>
 	</nav>
@@ -25,8 +25,13 @@
 		</a>
 		<p>The personal site of <strong>Jamie Knight</strong>, a slightly autistic (<abbr title="British Boradcasting Corpoeration">BBC</abbr>)  <strong>web developer</strong>, <strong>speaker</strong> and <strong>mountain biker</strong> who is never seen far from his plush sidekick <em>Lion</em>.</p>
 	</aside>
-	
-	<cub:article limit="3" listform="default"/>
 
+	<cub:if_section name="archive">
+		<div id="archive">
+			<cub:article limit="3" listform="monthly_article"/>
+		</div>
+	<cub:else />
+		<cub:article limit="3" listform="default"/>		
+	</cub:if_section>
 </body>
 </html>
