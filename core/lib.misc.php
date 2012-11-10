@@ -285,12 +285,10 @@
 			'listform' => '',
 		),$atts));
 	
-
-	
 		global $page;
 		$page['source_file'] = $page['source_file'];
-		return parse_form($form);
-		
+		$thing = parse_form($form);
+		return $thing['markup'];
 	}
 
 // -------------------------------------------------------------
@@ -301,6 +299,7 @@
 			'limit'=>'255',
 			'section' => 'default',
 			'listform' => '',
+			'sort'=>'',
 		),$atts));
 	
 		global $page;
@@ -309,55 +308,75 @@
 		
 		$form = ($form) ? $form : "list";
 		$form = ($listform) ? $listform : $form;
-		$count = 0;
+		
 		$output = '';
+		$articles = array();
+		$timestamps = array();
 	
-		foreach($files as $file){
+		foreach ($files as $file){
 			if(substr($file, -2) == "md"){
 				$page['source_file'] = str_replace(".md", '', $file) ; 
-				$output .= parse_form($form);
+				$thing = parse_form($form);
+				if($thing) $articles[] = $thing;
 			}
 		}
 		
-		return $output;
+		//create sort array
+		foreach ($articles as $key => $node) {
+		   $timestamps[$key] = $node['data']['published'];
+		}
 		
+		//apply sort to $articles.
+		array_multisort($timestamps, SORT_DESC, $articles);
+		
+		//return list of articles
+		foreach ($articles as $article){
+			$output .= $article['markup'];
+		};
+			
+		return $output;	
 	}
 
 // -------------------------------------------------------------
 	function parse_form($form){
 		global $page;
 		
+		$output = array();
+		
 		//define paths
 		$cachePath 	= "./core/cache/".$form."-".$page['source_file'].".md";
 		$sourcePath = "./content/".$page['section']."/".$page['source_file'].".md";
 		$sourcePath = (file_exists($sourcePath)) ? $sourcePath : "./content/default/".$page['source_file'].".md";
+		
 		//test and set form
 		$form 		= (file_exists("./forms/".$form.".php")) ? $form : "default";
 		$formPath 	= "./forms/".$form.".php";
 		
-		//hand caching
+		//handle caching
 		$sourceTime   = (file_exists($sourcePath)) ? filemtime($sourcePath)."<- source <br>" : false;
 		$cacheTime	  = (file_exists($cachePath)) ? filemtime($cachePath) : false;
 		$formTime	  = filemtime($formPath);
 				
 		//Cache is valid only if source and form are older than cache.
-		if($page['cache'] && ($sourceTime && $cacheTime && $sourceTime < $cacheTime && $formTime < $cacheTime)){
-			return file_get_contents($cachePath);
+		if ($page['cache'] && ($sourceTime && $cacheTime && $sourceTime < $cacheTime && $formTime < $cacheTime)){
+			//return markup and data
+			$output['markup'] = file_get_contents($cachePath);
+			$output['data']   = readFileContentIntoArray($sourcePath);
+			return $output;
 			
-		}else if(file_exists($sourcePath)){
-		
-			//get file content and apply markdown.
+		} else if (file_exists($sourcePath)){
+			//get file content 
 			$page['article']  = readFileContentIntoArray($sourcePath);
+			$output['data']   = $page['article'];  
 			$status = (isset($page['article']['headers']['status'])) ? $page['article']['headers']['status'] : "live" ;
 			
 			//load form:
 			if($page['article']['title'] && $status !== "hidden"){
-				
-				$markup = parse(file_get_contents($formPath));
+				//return markup and data
+				$output['markup'] = parse(file_get_contents($formPath));
 				//add to cache
-				file_put_contents($cachePath, $markup);
-				return $markup;
+				file_put_contents($cachePath, $output['markup']);
+				return $output;
 			}
 		}
-	
 	}
