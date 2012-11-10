@@ -37,6 +37,7 @@
                      $file['type'] = str_replace('|', ' ', $fields[1]);
                 } else if ($fname == 'published') {
                      $file['published'] = strtotime($fields[1]);
+ 
                 } else {
                      $file['headers'][$fname] = $fields[1];
                 }

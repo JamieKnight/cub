@@ -52,13 +52,13 @@
 
 		trace_add("[$txp_current_tag: ".($condition ? $gTxtTrue : $gTxtFalse)."]");
 
-		$els = strpos($thing, '<txp:else');
+		$els = strpos($thing, '<cub:else');
 
 		if ($els === FALSE)
 		{
 			return $condition ? $thing : '';
 		}
-		elseif ($els === strpos($thing, '<txp:'))
+		elseif ($els === strpos($thing, '<cub:'))
 		{
 			return $condition
 				? substr($thing, 0, $els)
@@ -68,7 +68,7 @@
 		$tag    = FALSE;
 		$level  = 0;
 		$str    = '';
-		$regex  = '@(</?txp:\w+(?:\s+\w+\s*=\s*(?:"(?:[^"]|"")*"|\'(?:[^\']|\'\')*\'|[^\s\'"/>]+))*\s*/?'.chr(62).')@s';
+		$regex  = '@(</?cub:\w+(?:\s+\w+\s*=\s*(?:"(?:[^"]|"")*"|\'(?:[^\']|\'\')*\'|[^\s\'"/>]+))*\s*/?'.chr(62).')@s';
 		$parsed = preg_split($regex, $thing, -1, PREG_SPLIT_DELIM_CAPTURE);
 
 		foreach ($parsed as $chunk)
@@ -273,4 +273,89 @@
 		}
 
 		return strtr($str, $array[$lang]);
+	}
+	
+// -------------------------------------------------------------	
+	function articleSingle($atts){
+		
+		extract(lAtts(array(
+			'form' => '',
+			'limit'=>'255',
+			'section' => 'default',
+			'listform' => '',
+		),$atts));
+	
+		global $page;
+		$page['source_file'] = $page['source_file'];
+		return parse_form($form);
+		
+	}
+
+// -------------------------------------------------------------
+	function articleList($atts){
+		
+		extract(lAtts(array(
+			'form' => '',
+			'limit'=>'255',
+			'section' => 'default',
+			'listform' => '',
+		),$atts));
+	
+		global $page;
+				
+		$files = scandir("./content/$section");
+		
+		$form = ($form) ? $form : "list";
+		$form = ($listform) ? $listform : $form;
+		$count = 0;
+		$output = '';
+	
+		foreach($files as $file){
+			if(substr($file, -2) == "md"){
+				$page['source_file'] = str_replace(".md", '', $file) ; 
+				$output .= parse_form($form);
+			}
+		}
+		
+		return $output;
+		
+	}
+
+// -------------------------------------------------------------
+	function parse_form($form){
+		global $page;
+		
+		//define paths
+		$cachePath 	= "./core/cache/".$form."-".$page['source_file'].".md";
+		$sourcePath = "./content/".$page['section']."/".$page['source_file'].".md";
+		
+		//test and set form
+		$form 		= (file_exists("./forms/".$form.".php")) ? $form : "default";
+		$formPath 	= "./forms/".$form.".php";
+		
+		//hand caching
+		$sourceTime   = (file_exists($sourcePath)) ? filemtime($sourcePath)."<- source <br>" : false;
+		$cacheTime	  = (file_exists($cachePath)) ? filemtime($cachePath) : false;
+		$formTime	  = filemtime($formPath);
+		
+		//Cache is valid only if source and form are older than cache.
+		if($page['cache'] && ($sourceTime && $cacheTime && $sourceTime < $cacheTime && $formTime < $cacheTime)){
+			return file_get_contents($cachePath);
+			
+		}else if(file_exists($sourcePath)){
+		
+			//get file content and apply markdown.
+			$page['article']  = readFileContentIntoArray($sourcePath);
+			$status = (isset($page['article']['headers']['status'])) ? $page['article']['headers']['status'] : "live" ;
+			
+			//load form:
+			if($page['article']['title'] && $status !== "hidden"){
+				
+				$markup = parse(file_get_contents($formPath));
+				//add to cache
+				file_put_contents($cachePath, $markup);
+				return $markup;
+			}
+		}
+	
 	}

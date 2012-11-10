@@ -8,7 +8,6 @@
 		global $page;
 		
 		if ($page['secondpass']){
-			
 			if ($page['type'] == "article" && isset($page['article']['title'])){ 
 				return $seperator.$page['article']['title'];
 			
@@ -30,45 +29,33 @@
 		$section = "house";
 	
 		return parse(EvalElse($thing, ($section == $name)));	
-	}	
-	
+	}
+
 // -------------------------------------------------------------
-	function article($atts, $thing){
-		
+	function if_individual_article($atts, $thing)
+	{
 		extract(lAtts(array(
-			'form' => '',
-			'limit' => '',
+			'name' => '',
 		),$atts));
 		
 		global $page;
-		if($page['type'] == "article"){
-			
-			$cachePath = "./core/cache/".$form."-".$page['source_file'].".md";
-			$sourcePath = "./content/".$page['source_file'].".md";
-			$formPath = "./templates/form.".$form.".php";
-			$cache = true;
-			//check cache
-			if($cache && file_exists($cachePath) && (microtime(true)-filemtime($cachePath) < 120))
-			{
-				return file_get_contents($cachePath);
-				
-			}else if(file_exists($sourcePath)){
-				
-				//get file content and apply markdown.
-				$article = readFileContentIntoArray($sourcePath);
-				$article['body'] = Markdown($article['body']);
-				$page['article'] = $article;
+		return parse(EvalElse($thing, ($page['type'] == "article")));	
+	}
 	
-				//load form:
-				$form = (file_exists($formPath)) ? $form : "default";
-				$markup = parse(file_get_contents("./templates/form.".$form.".php"));
-				
-				//add to cache
-				file_put_contents($cachePath, $markup);
-				return $markup;
-			}			
+// -------------------------------------------------------------
+	function article($atts, $thing){
+
+		global $page;
+		switch($page['type']){
+			case "article":
+				return articleSingle($atts);	
+				break;
+			case "list":
+				return articleList($atts);
+				break;
 		}
 	}
+	
 // -------------------------------------------------------------	
 	function title($atts, $thing){
 		global $page;
@@ -77,7 +64,8 @@
 // -------------------------------------------------------------	
 	function body($atts, $thing){
 		global $page;
-		return $page['article']['body']; 
+		include_once("core/PHPMarkdownExtra/markdown.php");
+		return markdown($page['article']['body']); 
 	}
 	
 // -------------------------------------------------------------	
@@ -89,25 +77,27 @@
 // -------------------------------------------------------------	
 	function featured_image(){
 		global $page;
-		if(isset($page['article']['headers']['feature image'])) return "images/".$page['article']['headers']['feature image'];
+		if(isset($page['article']['headers']['featured image'])) return "images/".$page['article']['headers']['featured image'];
 		return false;
 	}
 	
 // -------------------------------------------------------------
 	function if_featured_image($atts, $thing)
 	{	global $page;
-		return parse(EvalElse($thing, (isset($page['article']['headers']['feature image']))));
+		return parse(EvalElse($thing, (isset($page['article']['headers']['featured image']))));
 	}
 
 // -------------------------------------------------------------
-	function permalink($atts){
+	function permalink($atts, $thing){
 		extract(lAtts(array(
 			'label' => '',
 			'class' => '',
 		),$atts));
 		
 		global $page;
+		
 		//FIXME: I assume paths below.
+		$label = ($label == '') ? parse($thing) : $label ;
 		$output ='<a rel="bookmark" href="/cub/index.php?page='.$page['source_file'].'" class="'.$class.'">'.$label.'</a>';
 		return $output;
 	}

@@ -7,15 +7,16 @@
 	include_once("core/lib.file.php");
 	include_once("core/lib.tags.php");
 	include_once("core/lib.parse.php");
-	include_once("core/PHPMarkdownExtra/markdown.php");
-	
+
 	//setup the page info.
 	global $page;
+	
+	//enable caching?
+	$page['cache'] = (isset($_GET['cache'])) ? false : true;
 	
 	//find the file and parse the markdown
 	$article['source'] = (isset($_GET['page'])) ? $_GET['page'] : false;
 	
-	//If this is an article page then i could really do with the content for things like the title tag!
 	if($article['source'])
 	{
 		$page['type'] = "article";
@@ -27,7 +28,7 @@
 	}
 
 	//load template and parse
-	$html = file_get_contents("templates/page.default.php");
+	$html = file_get_contents("pages/default.php");
 	
 	//parse the page
 	$page['secondpass'] = false;
@@ -38,6 +39,6 @@
 	$html = parse($html);
 	echo $html;
 	//execution time.
-	echo "<p>Render Time: ".(microtime(true)-$before)."s <br />Memory Usage: ".(memory_get_usage() / 1024)."Kb</p>";
+	echo "<p>Render Time: ".round((microtime(true)-$before) * 1000, 2)."ms <br />Memory Usage: ".(memory_get_usage() / 1024)."Kb</p>";
 
 ?>
