@@ -75,6 +75,8 @@ $LastChangedRevision$
 // --------------------------------------------------------------
 	function parse($thing)
 	{
+		global $page;
+		$page['parse_counter'] = (isset($page['parse_counter'])) ? $page['parse_counter'] + 1 : 1;
 		$f = '@(</?cub:\S+\b.*(?:/)?(?<!\\\\)>)@sU';
 
 		$parsed = preg_split($f, $thing, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);

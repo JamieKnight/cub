@@ -9,7 +9,7 @@
 	include_once("core/lib.parse.php");
 
 	//setup the page info.
-	global $page;
+	global $page, $cubtrace;
 	
 	//enable caching?
 	$page['cache'] = (isset($_GET['cache'])) ? false : true;
@@ -39,6 +39,6 @@
 	$html = parse($html);
 	echo $html;
 	//execution time.
-	echo "<p>Render Time: ".(microtime(true)-$before)."s <br />Memory Usage: ".(memory_get_usage() / 1024)."Kb. File opens: ". $page['file_open_counter']."</p>";
+	echo "<p>Render Time: ".(microtime(true)-$before)."s <br />Memory Usage: ".(memory_get_usage() / 1024)."Kb. File opens: ". $page['file_open_counter']." Parse Count: ". $page['parse_counter']."</p>";
 
 ?>
