@@ -28,7 +28,7 @@
 
 	<cub:if_section name="archive">
 		<div id="archive">
-			<cub:article limit="3" listform="monthly_article"/>
+			<cub:article listform="monthly_article"/>
 		</div>
 	<cub:else />
 		<cub:article limit="3" listform="default"/>		

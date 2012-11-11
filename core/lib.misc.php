@@ -303,36 +303,43 @@
 		),$atts));
 	
 		global $page;
-				
+		
+
 		$files = scandir("./content/$section");
 		
 		$form = ($form) ? $form : "list";
 		$form = ($listform) ? $listform : $form;
 		
 		$output = '';
+		$count 	= 0;
+		
 		$articles = array();
-		$timestamps = array();
-	
+		$sort = array();
+		
 		foreach ($files as $file){
 			if(substr($file, -2) == "md"){
 				$page['source_file'] = str_replace(".md", '', $file) ; 
 				$thing = parse_form($form);
 				if($thing) $articles[] = $thing;
 			}
-		}
-		
+		}			
+
 		//create sort array
 		foreach ($articles as $key => $node) {
-		   $timestamps[$key] = $node['data']['published'];
+		   $sort[$key] = $node['data']['published'];
 		}
 		
 		//apply sort to $articles.
-		array_multisort($timestamps, SORT_DESC, $articles);
+		array_multisort($sort, SORT_DESC, $articles);
 		
 		//return list of articles
 		foreach ($articles as $article){
-			$output .= $article['markup'];
-		};
+			if($count++ < $limit){  
+				$output .= $article['markup'];
+			} else {
+				break;
+			}
+		}
 			
 		return $output;	
 	}
@@ -353,30 +360,38 @@
 		$formPath 	= "./forms/".$form.".php";
 		
 		//handle caching
-		$sourceTime   = (file_exists($sourcePath)) ? filemtime($sourcePath)."<- source <br>" : false;
+		$sourceTime   = (file_exists($sourcePath)) ? filemtime($sourcePath) : false;
 		$cacheTime	  = (file_exists($cachePath)) ? filemtime($cachePath) : false;
 		$formTime	  = filemtime($formPath);
-				
-		//Cache is valid only if source and form are older than cache.
-		if ($page['cache'] && ($sourceTime && $cacheTime && $sourceTime < $cacheTime && $formTime < $cacheTime)){
-			//return markup and data
-			$output['markup'] = file_get_contents($cachePath);
-			$output['data']   = readFileContentIntoArray($sourcePath);
-			return $output;
-			
-		} else if (file_exists($sourcePath)){
-			//get file content 
-			$page['article']  = readFileContentIntoArray($sourcePath);
-			$output['data']   = $page['article'];  
-			$status = (isset($page['article']['headers']['status'])) ? $page['article']['headers']['status'] : "live" ;
-			
-			//load form:
-			if($page['article']['title'] && $status !== "hidden"){
-				//return markup and data
-				$output['markup'] = parse(file_get_contents($formPath));
-				//add to cache
-				file_put_contents($cachePath, $output['markup']);
-				return $output;
+		
+		//provide raw file data (costs 5ms on single articles, where data is unused. But has nicer flow)
+		$data  =  readFileContentIntoArray($sourcePath);
+		$status = (isset($data['headers']['status'])) ? $data['headers']['status'] : "live" ;
+		
+		//ignore articles without title and which are hidden
+		if ($data['title'] && $status !== "hidden"){
+		
+			//Cache is valid only if source and form are older than cache.
+			if ($page['cache'] && ($sourceTime && $cacheTime && $sourceTime < $cacheTime && $formTime < $cacheTime)){
+				$markup = cub_file_get_contents($cachePath);			
+		
+			} elseif (file_exists($sourcePath)){
+				$page['article'] = $data;
+				$markup = parse(cub_file_get_contents($formPath));
+				file_put_contents($cachePath, $markup);
 			}
+			
+			return array('data' => $data, 'markup' =>$markup);
+		}else{
+			return false;
 		}
 	}
+	
+// -------------------------------------------------------------
+	function cub_file_get_contents($path){
+		global $page;
+		$page['file_open_counter'] = (isset($page['file_open_counter'])) ? $page['file_open_counter'] + 1 : 1;
+		return file_get_contents($path);
+	}
+	
+	
