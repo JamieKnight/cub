@@ -319,14 +319,14 @@
 		foreach ($files as $file){
 			if(substr($file, -2) == "md"){
 				$page['source_file'] = str_replace(".md", '', $file) ; 
-				$thing = parse_form($form);
+				$thing = readFileContentIntoArray(get_source_path());
 				if($thing) $articles[] = $thing;
 			}
 		}			
 
 		//create sort array
 		foreach ($articles as $key => $node) {
-		   $sort[$key] = $node['data']['published'];
+		   $sort[$key] = $node['published'];
 		}
 		
 		//apply sort to $articles.
@@ -334,8 +334,10 @@
 		
 		//return list of articles
 		foreach ($articles as $article){
-			if($count++ < $limit){  
-				$output .= $article['markup'];
+			if($count++ < $limit){ 
+				$page['article'] = $article;
+				$thing = parse_form($form);
+				$output .= $thing['markup'];
 			} else {
 				break;
 			}
@@ -352,8 +354,7 @@
 		
 		//define paths
 		$cachePath 	= "./core/cache/".$form."-".$page['source_file'].".md";
-		$sourcePath = "./content/".$page['section']."/".$page['source_file'].".md";
-		$sourcePath = (file_exists($sourcePath)) ? $sourcePath : "./content/default/".$page['source_file'].".md";
+		$sourcePath = get_source_path();
 		
 		//test and set form
 		$form 		= (file_exists("./forms/".$form.".php")) ? $form : "default";
@@ -365,23 +366,22 @@
 		$formTime	  = filemtime($formPath);
 		
 		//provide raw file data (costs 5ms on single articles, where data is unused. But has nicer flow)
-		$data  =  readFileContentIntoArray($sourcePath);
-		$status = (isset($data['headers']['status'])) ? $data['headers']['status'] : "live" ;
+		$page['article']  = (isset($page['article'])) ? $page['article'] : readFileContentIntoArray($sourcePath);
+		$status = (isset($page['article']['headers']['status'])) ? $page['article']['headers']['status'] : "live" ;
 		
 		//ignore articles without title and which are hidden
-		if ($data['title'] && $status !== "hidden"){
+		if ($page['article']['title'] && $status !== "hidden"){
 		
 			//Cache is valid only if source and form are older than cache.
 			if ($page['cache'] && ($sourceTime && $cacheTime && $sourceTime < $cacheTime && $formTime < $cacheTime)){
 				$markup = cub_file_get_contents($cachePath);			
 		
 			} elseif (file_exists($sourcePath)){
-				$page['article'] = $data;
 				$markup = parse(cub_file_get_contents($formPath));
 				file_put_contents($cachePath, $markup);
 			}
 			
-			return array('data' => $data, 'markup' =>$markup);
+			return array('data' => $page['article'], 'markup' =>$markup);
 		}else{
 			return false;
 		}
@@ -392,6 +392,14 @@
 		global $page;
 		$page['file_open_counter'] = (isset($page['file_open_counter'])) ? $page['file_open_counter'] + 1 : 1;
 		return file_get_contents($path);
+	}
+
+// -------------------------------------------------------------	
+	function get_source_path(){
+		global $page;
+		$sourcePath = "./content/".$page['section']."/".$page['source_file'].".md";
+		$sourcePath = (file_exists($sourcePath)) ? $sourcePath : "./content/default/".$page['source_file'].".md";
+		return $sourcePath;
 	}
 	
 	
