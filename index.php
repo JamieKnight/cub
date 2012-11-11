@@ -39,6 +39,6 @@
 	$html = parse($html);
 	echo $html;
 	//execution time.
-	echo "<p>Render Time: ".round((microtime(true)-$before) * 1000, 2)."ms <br />Memory Usage: ".(memory_get_usage() / 1024)."Kb</p>";
+	echo "<p>Render Time: ".(microtime(true)-$before)."s <br />Memory Usage: ".(memory_get_usage() / 1024)."Kb. File opens: ". $page['file_open_counter']."</p>";
 
 ?>
