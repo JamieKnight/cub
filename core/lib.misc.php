@@ -286,7 +286,6 @@
 		),$atts));
 	
 		global $page;
-		$page['source_file'] = $page['source_file'];
 		$thing = parse_form($form);
 		return $thing['markup'];
 	}
@@ -304,46 +303,62 @@
 	
 		global $page;
 		
-
-		$files = scandir("./content/$section");
-		
+		//get file list
 		$form = ($form) ? $form : "list";
 		$form = ($listform) ? $listform : $form;
 		
-		$output = '';
-		$count 	= 0;
+		$sectionStat = stat("./content/$section");
+		$formStat	 = stat("./forms/$section.php");
+		$hash 		 = md5(serialize($atts).$formStat['mtime'].$sectionStat['mtime']);
 		
-		$articles = array();
-		$sort = array();
-		
-		foreach ($files as $file){
-			if(substr($file, -2) == "md"){
-				$page['source_file'] = str_replace(".md", '', $file) ; 
-				$thing = readFileContentIntoArray(get_source_path());
-				if($thing) $articles[] = $thing;
-			}
-		}			
-
-		//create sort array
-		foreach ($articles as $key => $node) {
-		   $sort[$key] = $node['published'];
-		}
-		
-		//apply sort to $articles.
-		array_multisort($sort, SORT_DESC, $articles);
-		
-		//return list of articles
-		foreach ($articles as $article){
-			if($count++ < $limit){ 
-				$page['article'] = $article;
-				$thing = parse_form($form);
-				$output .= $thing['markup'];
-			} else {
-				break;
-			}
-		}
+		if(file_exists("./core/cache/$hash")){
+			return cub_file_get_contents("./core/cache/$hash";);
+		}else{
 			
-		return $output;	
+			$files		 = scandir("./content/$section");
+			
+			//place holders
+			$output = '';
+			$count 	= 0;
+			$articles = array();
+			$sort = array();
+			
+			//create $articles array of file data
+			foreach ($files as $file){
+				//only process md files.
+				if(substr($file, -2) == "md"){
+					//set source file.
+					$page['source_file'] = str_replace(".md", '', $file); 
+					$articleData = readFileContentIntoArray(get_source_path());
+					$articles[$page['source_file']] = $articleData;
+				}
+			}
+	
+			//create array with sort order
+			foreach ($articles as $key => $node) {
+			   $sort[$key] = $node['published'];
+			}
+			
+			//apply sort to $articles.
+			array_multisort($sort, SORT_DESC, $articles);
+			
+			//return list of articles till limit
+			foreach ($articles as $source => $article){
+				if($count++ < $limit){ 
+					$page['source_file'] = $source;
+					$page['article'] = $article;
+					$thing = parse_form($form);
+					$page['article'] = '';
+					$output .= $thing['markup'];
+				} else {
+					break;
+				}
+			}
+		
+			//cache and output
+			file_put_contents($cacheFile, $output);
+			return $output;	
+		}
 	}
 
 // -------------------------------------------------------------
@@ -352,13 +367,13 @@
 		
 		$output = array();
 		
-		//define paths
-		$cachePath 	= "./core/cache/".$form."-".$page['source_file'].".md";
-		$sourcePath = get_source_path();
-		
 		//test and set form
 		$form 		= (file_exists("./forms/".$form.".php")) ? $form : "default";
 		$formPath 	= "./forms/".$form.".php";
+		
+		//define paths
+		$cachePath 	= "./core/cache/".$form."-".$page['source_file'].".md";
+		$sourcePath = get_source_path();
 		
 		//handle caching
 		$sourceTime   = (file_exists($sourcePath)) ? filemtime($sourcePath) : false;
@@ -367,6 +382,7 @@
 		
 		//provide raw file data (costs 5ms on single articles, where data is unused. But has nicer flow)
 		$page['article']  = (isset($page['article'])) ? $page['article'] : readFileContentIntoArray($sourcePath);
+
 		$status = (isset($page['article']['headers']['status'])) ? $page['article']['headers']['status'] : "live" ;
 		
 		//ignore articles without title and which are hidden
@@ -380,7 +396,6 @@
 				$markup = parse(cub_file_get_contents($formPath));
 				file_put_contents($cachePath, $markup);
 			}
-			
 			return array('data' => $page['article'], 'markup' =>$markup);
 		}else{
 			return false;
@@ -401,5 +416,4 @@
 		$sourcePath = (file_exists($sourcePath)) ? $sourcePath : "./content/default/".$page['source_file'].".md";
 		return $sourcePath;
 	}
-	
 	
