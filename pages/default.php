@@ -2,15 +2,12 @@
 <html>
 <head>
 	<title>(CUB) Jamie & Lion<cub:page_title seperator=" - " /></title>
-	<link href="/screen.css" media="screen" rel="stylesheet" type="text/css" />
-	<meta name="viewport" content="width=device-width initial-scale=1.0, 
-    maximum-scale=1.0, minimum-scale=1.0" />
+	<link href="screen.css" media="screen" rel="stylesheet" type="text/css" />
+	<meta name="viewport" content="width=device-width initial-scale=1.0, minimum-scale=1.0" />
 	<meta charset="UTF-8">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 </head>
 
 <body id="home">
-	
 	<nav>
 		<ul>
 			<li><a href="/cub/">Home</a></li>
@@ -31,7 +28,7 @@
 			<cub:article listform="monthly_article"/>
 		</div>
 	<cub:else />
-		<cub:article limit="3" listform="default"/>		
+		<cub:article limit="3" />		
 	</cub:if_section>
 </body>
 </html>

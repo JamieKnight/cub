@@ -1,0 +1,63 @@
+2012 Mac Mini First Impressions and 2010 iMac comparison
+===
+published: 5 November 2012
+type: article
+featured image: mac-mini.png
+
+I purchased the Mac mini about a week ago to see if it could replace my 2010 iMac. On paper it’s a close run thing for my mostly media use. Will i return the Mac mini or it is time to return to Apple’s vision of minimal computing?
+
+The 2012 Mac mini was released a few weeks ago as an incremental improvement over it’s predecessor. Its got a much faster CPU but paired with a moderate drop in graphics capability. The model i am testing is the quad core i7 version with a 1TB hard drive.
+
+### Context: What’s it for?
+
+My home Mac is mostly used too manage and serve my 1tb media library to my Apple TV and iPad. In the last year or so my home Mac has also served a second purpose, enabling freelance iOS and web development.
+
+My home Mac is rarely used for development. However, the ability for freelance use provides assurance. If my day job goes wrong i have a viable backup plan.
+
+As part of investigating the use of the Mac mini i have tried a few different places to put the mini. At first i had it nestled under the TV using the TV as a monitor, now it is back on a desk connected to an old 19” screen.
+
+So for my needs, does the Mac mini work well? Lets find out.
+
+### Media
+
+The Mac mini was very capable for my media use. The picture quality issues which effected my 2010 mini have been resolved. If my needs were only media playback / serving then i would consider the Mac mini adequate. However being placed under the TV made managing media awkward. Sat in front of the TV is a bad place to use a keyboard and mouse!
+
+After i moved the mini to the desk and connected it to a normal display it faired better. I watched my way through Avatar and Played portal 2 and it performed well. It was not perfect, the sluggish 5400rpm hard drive made playback stutter from time to time if there way anything else going on. The Mac also ran out of RAM a number of times during my testing, this would be easy enough to fix (£50 for 16gb of RAM is cheap!) but 4gb is very little memory on a £610 system.
+
+Sat on my the desk plugged into the monitor works, i have a old monitor i can use for this purpose and a suitable keyboard. However, compared to using the iMac the same way the difference is clear, the integrated speakers, and that gorgeous 27” screen make a huge difference. Selling the iMac and buying the mini nets me a little profit, but not a whole lot, around £200 all in (£150 by the time i have fixed the RAM).
+
+With a screen plugged in the Mini works well as a media server, i would even consider using it long term plugged into the TV if media was my sole use case.
+
+However, as a pure media centre it has some frustrating limitations. Like last years model the Mac mini no longer has a DVD drive. For some this would be a deal breaker. For me this is annoying but manageable. The real frustration is the lack of bluray compatibility in OSX, even with my external blurry drive its not possible to play back blu-ray disks on the mini. In order to playback rented blu-rays i have to boot into Windows. This is not really viable and disappointing on such an expensive desktop.
+
+However on the hardware side the Mac mini does have something going for it. Unlike most other Apple hardware the Mac mini is quite upgradable. It’s somewhat straight forward to add up to 16gb of RAM and a second hard drive.
+
+If i money was no object, a Mac mini with 16gb of RAM, a fast SSD and 1TB or more of storage would make a great and capable media centre. The i7 CPU was able to transcode the bluray rips to Apple TV files 67% faster than my iMac. Whats more the Mac Mini does it consuming a fraction of the power. Paired with a great display the Mac mini is a very capable machine.
+
+Back with what i have on media alone the mini handles itself well. But looking at the bigger picture it starts to struggle with the iMac on value.
+
+### iOS & Web Development, Gaming Etc.
+
+As i mentioned in the introduction, the Mac mini will only work for me if it could serve dual purpose. Alongside daily use a media centre it had to work as a for software development.
+
+For my setup (old screen) development on the Mac mini is not too great. While the system is capable you really feel the RAM and sluggish hard drive slowing you down. If i spent a little more and fitted a small SSD or more RAM the machine could be capable. However at that point it costs as much as i would make selling the iMac for a vastly inferior screen. While the Mini wakes up faster, the iMac is faster in use once the drive has spun up.
+
+If i had my old cinema display available (its currently in use in my day job) then the comparison would be far stronger. For the price of the iMac i could have a SSD equipped mini with double the RAM. If you have a screen your happy with then the Mac mini coupled with a faster drive makes for a good development platform.
+
+### Little Things
+
+I have discussed how the mini works for software development and media duties above, but thats not the whole story. There are a range of other smaller factors which hold the mini back as i have it configured.
+
+The first annoyance is graphics, the integrated HD4000 graphics may be fine on a laptop but for a desktop it feels a little anaemic. This would be my only Mac upgrade for a good few years and the graphics already feel slow and outdated. It can play portal 2 (the game i play most) but it won’t play more modern games smoothly. While not something to worry about to much its hard to completely dismiss as irrelevant.
+
+The second annoyance is around HiDPI support, HiDPI doubles the size of everything on the screen in both directions. For my vision this works amazingly well, it’s far more comfortable. The Mac mini supports HiDPI but it provides an unworkably small desktop on any display i can plug into it. The only way to get around this would be to purchase a high quality 2560 × 1440 display alongside the mini.
+
+Finally a bug prevent the mini from being able to wake up for network access when using a wireless network. This is problem for my use, currently the iMac spends 90% of it’s time asleep (consuming 1.4w of power) then wakes up automatically when it is called to serve files. The Mac mini as it stands cannot do this, thus it would be burning through 11w of power all the time. Even though the mini is far more energy efficient in normal use the lack of support for wireless wake on LAN is a deal breaker, it would be using ~8x the power most of the time.
+
+While not a deal breaker like the lack of wake on LAN i found the cables on the mini frustrating. Unless you are using wireless accessories the cables for the Mac mini are quite unsightly. The power cable for the iMac is a design feature, on the Mini its an eyesore. It’s not that important on the scheme of things, but minor annoyances add up!
+
+### Final Words
+
+The Mac mini is a very impressive piece of kit. It’s expensive, but it is one of the best small form factor computers around. For my use case however my current iMac provides much better value. If it had a display i liked available then the comparison would be far closer.
+
+In order to keep the iMac i had to pull out of selling it quite late (apologies to the buyer, again), however I’m planning on returning the Mac mini. It’s a shame as i really like the idea of minimal computing. I find the idea of a Macbook Air & Mac Mini combo alluring as a power efficient small duo. As it stands, the Mac mini does not fill my needs, perhaps it will in the future.
