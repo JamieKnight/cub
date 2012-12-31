@@ -26,7 +26,7 @@ To get going, simply checkout the files and upload them to some PHP 5.3 capable 
 * Article form tags (```<cub:title />```, ```<cub:body />```, ```<cub:posted />```, ```<cub:featured_image>```. ```<cub:if_featured_image>```).
 * Fancy stuff like ```<cub:if_different >```
 * Free minimal theme.
-* 
+
 #Work in progress
 * Custom tags (```<cub:custom name="">```)
 * Clean URLS
