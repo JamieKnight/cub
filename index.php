@@ -621,6 +621,15 @@
 		return $page['article']['title']; 
 	}
 	
+	function custom($atts, $thing){
+		global $page;
+		extract(lAtts(array(
+			'name' => '',
+		),$atts));
+		
+		return (isset($page['article']['headers'][$name])) ? $page['article']['headers'][$name] : false ; 
+	}
+	
 	function body($atts, $thing){
 		global $page;
 		//return $page['article']['body'];
