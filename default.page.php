@@ -5,6 +5,7 @@
 	<link href="screen.css" media="screen" rel="stylesheet" type="text/css" />
 	<meta name="viewport" content="width=device-width initial-scale=1.0, minimum-scale=1.0" />
 	<meta charset="UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body id="home">
@@ -18,7 +19,7 @@
 	
 	<aside>
 		<a href="/">
-			<img src="/headshot.jpg" alt="Photo of Jamie &amp; Lion" />
+			<img src="headshot.jpg" alt="Photo of Jamie &amp; Lion" />
 		</a>
 		<p>The personal site of <strong>Jamie Knight</strong>, a slightly autistic (<abbr title="British Boradcasting Corpoeration">BBC</abbr>)  <strong>web developer</strong>, <strong>speaker</strong> and <strong>mountain biker</strong> who is never seen far from his plush sidekick <em>Lion</em>.</p>
 	</aside>
