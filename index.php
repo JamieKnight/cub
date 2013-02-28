@@ -12,7 +12,7 @@
 	//$page['cache'] 		 = false;
 	
 	//parse the page template
-	$html = parse(cub_file_get_contents("pages/default.php"));
+	$html = parse(cub_file_get_contents("default.page.php"));
 	
 	//parse again & output
 	$page['secondpass'] = true;
@@ -345,8 +345,8 @@
 		global $page;
 		
 		//test and set form
-		$form 		= (file_exists("./forms/".$form.".php")) ? $form : "default";
-		$formPath 	= "./forms/".$form.".php";
+		$form 		= (file_exists("./".$form.".form.php")) ? $form : "default";
+		$formPath 	= "./".$form.".form.php";
 		
 		//define paths
 		$sourcePath = get_source_path();
@@ -540,7 +540,7 @@
 		//this works but is slow.
 		$sectionStat = dirmtime("./content/$section");
 		$prefix 	 = md5(serialize($atts)); 
-		$formStat	 = stat("./forms/$form.php");
+		$formStat	 = stat("./$form.form.php");
 		$cacheFile 	 = "./cache/".$prefix."-".$formStat['mtime'].$sectionStat;
 
 		if($page['cache'] && file_exists($cacheFile)){

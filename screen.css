@@ -150,6 +150,7 @@ aside {
 	padding: 40px;
 	clear: both; 
 	overflow: auto;
+	font-size: 16px;
 }
 
 aside img {
