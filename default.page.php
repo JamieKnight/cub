@@ -11,8 +11,8 @@
 <body id="home">
 	<nav>
 		<ul>
-			<li><a href="/cub/">Home</a></li>
-			<li><a href="/cub/index.php?s=archive">Archive</a></li>
+			<li><a href="/">Home</a></li>
+			<li><a href="/index.php?s=archive">Archive</a></li>
 			<li><a href="http://pluslion.com">Work</a></li>
 		</ul>
 	</nav>

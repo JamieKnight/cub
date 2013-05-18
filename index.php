@@ -541,12 +541,16 @@
 		$sectionStat = dirmtime("./content/$section");
 		$prefix 	 = md5(serialize($atts)); 
 		$formStat	 = stat("./$form.form.php");
-		$cacheFile 	 = "./cache/".$prefix."-".$formStat['mtime'].$sectionStat;
+		$cacheFile 	 = "cache/".$prefix."-".$formStat['mtime'].$sectionStat;
+		
+		$meminstance = new Memcache();
+		$meminstance->pconnect('localhost', 11211);
+		
+		$result = $meminstance->get($cacheFile);
 
-		if($page['cache'] && file_exists($cacheFile)){
-			return cub_file_get_contents($cacheFile);
-		}else{
-			
+		if ($result) {
+			return $result;
+		} else {
 			$articles = load_and_sort_articles($section);
 			$output = '';
 			$count 	= 0;
@@ -565,8 +569,7 @@
 			}
 		
 			//cache and output
-			file_put_contents($cacheFile, $output);
-			//unlink_file_by_prefix("./cache", )
+			$meminstance->set($cacheFile, $output, 0, 20);
 			return $output;	
 		}
 	}
